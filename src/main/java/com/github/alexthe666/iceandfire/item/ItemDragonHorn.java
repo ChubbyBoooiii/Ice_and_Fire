@@ -88,6 +88,8 @@ public class ItemDragonHorn extends Item {
             target.writeEntityToNBT(entityTag);
             NBTTagCompound newTag = new NBTTagCompound();
             newTag.setTag("EntityTag", entityTag);
+            entityTag.setString("CustomName", target.getCustomNameTag());
+            entityTag.setString("OwnerName", ((EntityDragonBase) target).getOwner().getName());
             trueStack.setTagCompound(newTag);
             playerIn.swingArm(hand);
             playerIn.world.playSound(playerIn, playerIn.getPosition(), SoundEvents.ENTITY_ZOMBIE_VILLAGER_CONVERTED, SoundCategory.NEUTRAL, 3, 0.75F);
@@ -95,7 +97,7 @@ public class ItemDragonHorn extends Item {
             playerIn.world.removeEntity(target);
             return true;
         }
-       return false;
+        return false;
     }
 
 
@@ -114,6 +116,8 @@ public class ItemDragonHorn extends Item {
                 tooltip.add("" + name);
                 String gender = I18n.format("dragon.gender") + I18n.format((entityTag.getBoolean("Gender") ? "dragon.gender.male" : "dragon.gender.female"));
                 tooltip.add("" + gender);
+                String owner = entityTag.getString("OwnerName").isEmpty() ? I18n.format("dragon.owner") + "No Owner" : I18n.format("dragon.owner") + entityTag.getString("OwnerName");
+                tooltip.add("" + owner);
                 int stagenumber = entityTag.getInteger("AgeTicks") / 24000;
                 int stage1 = 0;
                 {
